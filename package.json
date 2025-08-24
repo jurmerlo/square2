@@ -1,0 +1,16 @@
+{
+  "name": "@square2/square2-monorepo",
+  "private": true,
+  "description": "The Square2 Monorepo",
+  "main": "index.js",
+  "scripts": {
+    "lint": "biome check"
+  },
+  "keywords": [],
+  "author": "Jurmerlo",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.0",
+  "devDependencies": {
+    "@biomejs/biome": "2.2.2"
+  }
+}

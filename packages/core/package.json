@@ -1,0 +1,26 @@
+{
+  "name": "@square2/core",
+  "version": "0.1.0",
+  "description": "The core engine for Square2",
+  "type": "module",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "biome check",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "Jurmerlo",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.0",
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
