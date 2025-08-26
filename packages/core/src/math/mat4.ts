@@ -18,24 +18,6 @@ export type Mat4Value = [
   number,
 ];
 
-export type OrthoParams = {
-  left: number;
-  right: number;
-  bottom: number;
-  top: number;
-  near: number;
-  far: number;
-};
-
-export type From2dRotationTranslationScaleParams = {
-  rotation: number;
-  x: number;
-  y: number;
-  scaleX: number;
-  scaleY: number;
-  out?: Mat4;
-};
-
 /**
  * A 4x4 matrix class.
  * Useful for 2D and 3D transformations.
@@ -84,6 +66,13 @@ export class Mat4 {
     }
 
     return new Mat4(data);
+  }
+
+  /**
+   * Put the matrix back into the object pool.
+   */
+  static put(mat: Mat4): void {
+    Mat4.POOL.push(mat);
   }
 
   /**
@@ -190,14 +179,16 @@ export class Mat4 {
    * @param out - Optional matrix to store the result.
    * @returns The matrix.
    */
-  static from2dRotationTranslationScale({
-    rotation,
-    x,
-    y,
-    scaleX,
-    scaleY,
-    out,
-  }: From2dRotationTranslationScaleParams): Mat4 {
+
+  // biome-ignore lint/nursery/useMaxParams: This function can be called a lot of times, so keeping params in a single object would be less efficient.
+  static from2dRotationTranslationScale(
+    rotation: number,
+    x: number,
+    y: number,
+    scaleX: number,
+    scaleY: number,
+    out?: Mat4,
+  ): Mat4 {
     const result = out ?? Mat4.get();
 
     const z = Math.sin(rotation * 0.5);
@@ -433,7 +424,8 @@ export class Mat4 {
    * @param params.far - The far clipping plane.
    */
 
-  ortho({ left, right, bottom, top, near, far }: OrthoParams): void {
+  // biome-ignore lint/nursery/useMaxParams: This function can be called a lot of times, so keeping params in a single object would be less efficient.
+  ortho(left: number, right: number, bottom: number, top: number, near: number, far: number): void {
     const lr = 1 / (left - right);
     const bt = 1 / (bottom - top);
     const nf = 1 / (near - far);
@@ -519,13 +511,6 @@ export class Mat4 {
     out.value[15] = (a20 * b03 - a21 * b01 + a22 * b00) * det;
 
     return out;
-  }
-
-  /**
-   * Put the matrix back into the object pool.
-   */
-  put(): void {
-    Mat4.POOL.push(this);
   }
 
   /**

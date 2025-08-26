@@ -44,6 +44,13 @@ export class Vec3 {
   }
 
   /**
+   * Return the vector to the object pool.
+   */
+  static put(vec: Vec3): void {
+    Vec3.POOL.push(vec);
+  }
+
+  /**
    * Create a new vector.
    * @param x - The x axis position of the vector.
    * @param y - The y axis position of the vector.
@@ -128,12 +135,5 @@ export class Vec3 {
    */
   toString(): string {
     return `{ x: ${this.x}, y: ${this.y}, z: ${this.z} }`;
-  }
-
-  /**
-   * Return the vector to the object pool.
-   */
-  put(): void {
-    Vec3.POOL.push(this);
   }
 }

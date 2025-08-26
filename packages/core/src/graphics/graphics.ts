@@ -1,4 +1,4 @@
-import { Mat4, type OrthoParams } from '../math/mat4.js';
+import { Mat4 } from '../math/mat4.js';
 import type { Rectangle } from '../math/rectangle.js';
 import type { Vec2 } from '../math/vec2.js';
 import type { BitmapFont } from './bitmapFont.js';
@@ -38,15 +38,6 @@ export class Graphics {
   private canvas: HTMLCanvasElement;
 
   private pixelRatio: number;
-
-  private orthoProjection: OrthoParams = {
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0,
-    near: -1,
-    far: 1,
-  };
 
   constructor(context: GLContext, canvas: HTMLCanvasElement, pixelRatio: number) {
     this.context = context;
@@ -108,7 +99,10 @@ export class Graphics {
       throw new Error('Cannot pop the last transform off the stack');
     }
 
-    this.transformStack.pop()?.put();
+    const transform = this.transformStack.pop();
+    if (transform) {
+      Mat4.put(transform);
+    }
   }
 
   start(clear: boolean = true, newClearColor?: Color): void {
@@ -125,9 +119,7 @@ export class Graphics {
       height = this.canvas.height * this.pixelRatio;
     }
 
-    this.orthoProjection.right = width;
-    this.orthoProjection.bottom = height;
-    this.projection.ortho(this.orthoProjection);
+    this.projection.ortho(0, width, height, 0, -1, 1);
 
     gl.viewport(0, 0, width, height);
 

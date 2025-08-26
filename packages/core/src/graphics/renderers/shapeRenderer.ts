@@ -40,6 +40,9 @@ export class ShapeRenderer extends BaseRenderer {
    */
   private readonly tempVec3: Vec3;
 
+  private readonly tempLineStart: Vec2;
+  private readonly tempLineEnd: Vec2;
+
   private readonly tempP1: Vec2;
 
   private readonly tempP2: Vec2;
@@ -55,6 +58,9 @@ export class ShapeRenderer extends BaseRenderer {
     super(context);
 
     this.tempVec3 = new Vec3();
+    this.tempLineStart = new Vec2();
+    this.tempLineEnd = new Vec2();
+
     this.tempP1 = new Vec2();
     this.tempP2 = new Vec2();
     this.tempP3 = new Vec2();
@@ -225,24 +231,24 @@ export class ShapeRenderer extends BaseRenderer {
    */
   drawRect(rect: Rectangle, lineWidth: number): void {
     // Top.
-    this.tempP1.set(rect.x, rect.y);
-    this.tempP2.set(rect.x + rect.width, rect.y);
-    this.drawLine(this.tempP1, this.tempP2, 'inside', lineWidth);
+    this.tempLineStart.set(rect.x, rect.y);
+    this.tempLineEnd.set(rect.x + rect.width, rect.y);
+    this.drawLine(this.tempLineStart, this.tempLineEnd, 'inside', lineWidth);
 
     // Right.
-    this.tempP1.set(rect.x + rect.width, rect.y);
-    this.tempP2.set(rect.x + rect.width, rect.y + rect.height);
-    this.drawLine(this.tempP1, this.tempP2, 'inside', lineWidth);
+    this.tempLineStart.set(rect.x + rect.width, rect.y);
+    this.tempLineEnd.set(rect.x + rect.width, rect.y + rect.height);
+    this.drawLine(this.tempLineStart, this.tempLineEnd, 'inside', lineWidth);
 
     // Bottom.
-    this.tempP1.set(rect.x + rect.width, rect.y + rect.height);
-    this.tempP2.set(rect.x, rect.y + rect.height);
-    this.drawLine(this.tempP1, this.tempP2, 'inside', lineWidth);
+    this.tempLineStart.set(rect.x + rect.width, rect.y + rect.height);
+    this.tempLineEnd.set(rect.x, rect.y + rect.height);
+    this.drawLine(this.tempLineStart, this.tempLineEnd, 'inside', lineWidth);
 
     // Left.
-    this.tempP1.set(rect.x, rect.y + rect.height);
-    this.tempP2.set(rect.x, rect.y);
-    this.drawLine(this.tempP1, this.tempP2, 'inside', lineWidth);
+    this.tempLineStart.set(rect.x, rect.y + rect.height);
+    this.tempLineEnd.set(rect.x, rect.y);
+    this.drawLine(this.tempLineStart, this.tempLineEnd, 'inside', lineWidth);
   }
 
   /**
@@ -313,9 +319,9 @@ export class ShapeRenderer extends BaseRenderer {
       const t = sx;
       sx = cos * sx - sin * sy;
       sy = cos * sy + sin * t;
-      this.tempP1.set(px, py);
-      this.tempP2.set(sx + center.x, sy + center.y);
-      this.drawLine(this.tempP1, this.tempP2, 'outside', lineWidth);
+      this.tempLineStart.set(px, py);
+      this.tempLineEnd.set(sx + center.x, sy + center.y);
+      this.drawLine(this.tempLineStart, this.tempLineEnd, 'outside', lineWidth);
     }
   }
 
@@ -360,16 +366,16 @@ export class ShapeRenderer extends BaseRenderer {
 
     for (let i = 1; i < vertices.length; i++) {
       const current = vertices[i];
-      this.tempP1.set(last.x + center.x, last.y + center.y);
-      this.tempP2.set(current.x + center.x, current.y + center.y);
-      this.drawLine(this.tempP1, this.tempP2, 'inside', lineWidth);
+      this.tempLineStart.set(last.x + center.x, last.y + center.y);
+      this.tempLineEnd.set(current.x + center.x, current.y + center.y);
+      this.drawLine(this.tempLineStart, this.tempLineEnd, 'inside', lineWidth);
       last = current;
     }
 
     // Connect the last vertex to the first.
-    this.tempP1.set(last.x + center.x, last.y + center.y);
-    this.tempP2.set(start.x + center.x, start.y + center.y);
-    this.drawLine(this.tempP1, this.tempP2, 'inside', lineWidth);
+    this.tempLineStart.set(last.x + center.x, last.y + center.y);
+    this.tempLineEnd.set(start.x + center.x, start.y + center.y);
+    this.drawLine(this.tempLineStart, this.tempLineEnd, 'inside', lineWidth);
   }
 
   /**

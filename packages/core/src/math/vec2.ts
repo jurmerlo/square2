@@ -88,6 +88,13 @@ export class Vec2 {
   }
 
   /**
+   * Put this vector back into the object pool.
+   */
+  static put(vec: Vec2): void {
+    Vec2.POOL.push(vec);
+  }
+
+  /**
    * Calculate the distance between two vectors.
    * @param a - The first vector.
    * @param b - The second vector.
@@ -224,13 +231,6 @@ export class Vec2 {
    */
   dot(other: Vec2): number {
     return this.x * other.x + this.y * other.y;
-  }
-
-  /**
-   * Put this vector back into the object pool.
-   */
-  put(): void {
-    Vec2.POOL.push(this);
   }
 
   /**

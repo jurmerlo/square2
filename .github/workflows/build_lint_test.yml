@@ -1,0 +1,81 @@
+name: Lint, Build and Test Square2
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+jobs:
+  lint-square2:
+    name: 'Lint Square2 Monorepo'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint Monorepo
+        run: pnpm lint
+
+
+  build-test-core:
+    name: 'Build and Test Core'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm --filter @square2/core install
+
+      - name: Build @square2/core
+        run: pnpm --filter @square2/core build
+
+      - name: Test @square2/core
+        run: pnpm --filter @square2/core test
+
+
+  build-square3-test-projects:
+    name: 'Build Square3 Test Projects'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build @square2/core
+        run: pnpm --filter @square2/core build
+
+
+      # Square2 Test Projects
+      - name: Build @square2-projects/core-shapes
+        run: pnpm --filter @square2-projects/core-shapes build
+

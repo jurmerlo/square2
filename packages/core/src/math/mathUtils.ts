@@ -108,8 +108,8 @@ export function linesIntersect(p1Start: Vec2, p1End: Vec2, p2Start: Vec2, p2End:
 
   const bDotDPrep = b.x * d.y - b.y * d.x;
   if (bDotDPrep === 0) {
-    b.put();
-    d.put();
+    Vec2.put(b);
+    Vec2.put(d);
 
     return false;
   }
@@ -117,18 +117,18 @@ export function linesIntersect(p1Start: Vec2, p1End: Vec2, p2Start: Vec2, p2End:
   const c = p2Start.clone().subtract(p1Start);
   const t = (c.x * d.y - c.y * d.x) / bDotDPrep;
   if (t < 0 || t > 1) {
-    b.put();
-    d.put();
-    c.put();
+    Vec2.put(b);
+    Vec2.put(d);
+    Vec2.put(c);
 
     return false;
   }
 
   const u = (c.x * b.y - c.y * b.x) / bDotDPrep;
   if (u < 0 || u > 1) {
-    b.put();
-    d.put();
-    c.put();
+    Vec2.put(b);
+    Vec2.put(d);
+    Vec2.put(c);
 
     return false;
   }
@@ -145,14 +145,14 @@ export function linesIntersect(p1Start: Vec2, p1End: Vec2, p2Start: Vec2, p2End:
       if (Vec2.distance(p1Start, point) < Vec2.distance(p1Start, out)) {
         out.copyFrom(point);
       }
-      p1Start.put();
+      Vec2.put(p1Start);
     }
-    point.put();
+    Vec2.put(point);
   }
 
-  b.put();
-  d.put();
-  c.put();
+  Vec2.put(b);
+  Vec2.put(d);
+  Vec2.put(c);
 
   return true;
 }
