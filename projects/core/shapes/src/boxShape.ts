@@ -1,4 +1,4 @@
-import { Rectangle, type Color, type Graphics, type Vec2 } from '@square2/core';
+import { type Color, type Graphics, Rectangle, type Vec2 } from '@square2/core';
 import { Shape } from './shape';
 
 type BoxShapeProps = {
